@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const { validationResult } = require('express-validator');
 const prisma = new PrismaClient;
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
 async function register(req, res) {
     const errors = validationResult(req);
@@ -11,7 +12,6 @@ async function register(req, res) {
     }
 
     const newUser = req.body
-
     const cryptPassword =  await bcrypt.hash(newUser.password, 10);
 
     const data = await prisma.user.create({
@@ -22,7 +22,13 @@ async function register(req, res) {
         }
     })
 
-    res.send(data);
+      // genero il token JWT
+  // npm i jsonwebtoken
+  const token = jwt.sign(data, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+
+  res.json({ data, token });
 }
 
 async function login(req, res) {
