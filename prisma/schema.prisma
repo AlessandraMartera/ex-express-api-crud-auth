@@ -52,7 +52,7 @@ model Tag {
 
 model User {
   id        Int      @id @default(autoincrement())
-  usdername String   @db.VarChar(32)
+  username  String   @db.VarChar(32)
   email     String   @unique
   password  String
   createdAt DateTime @default(now())

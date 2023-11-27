@@ -3,22 +3,16 @@
  */
 
 module.exports = {
-    id: {
-        in: ["params"],
-        isInt: {
-        errorMessage: "ID deve essere un numero intero",
-    },
-    },
     username: {
         in: ["body"],
         notEmpty: true,
-        isLength: {
-            options:{
-                min: 4,
-                max: 12
-            },
-            errorMessage: "username troppo corto o troppo lungo, deve avere monimo 4 caratteri e un massimo di 12"
-        },
+        // isLength: {
+        //     options:{
+        //         min: 4,
+        //         max: 12
+        //     },
+        //     errorMessage: "username troppo corto o troppo lungo, deve avere monimo 4 caratteri e un massimo di 12"
+        // },
         errorMessage: "insertire username nel formato corretto"
     },
     email: {
