@@ -3,27 +3,30 @@ const router = express.Router();
 const postsController = require('../controllers/posts');
 const { body, checkSchema } = require("express-validator");
 
-const postCreate = require("../validations/postCreate");
+const post = require("../validations/post");
 
 router.get('/', postsController.index);
 
 router.get('/:id', postsController.show);
 
 router.post('/',
+  [
+    body("title").notEmpty(),
+    body("image").notEmpty(),
+    body("content").notEmpty(),
+    body("published").isBoolean(),
+  ],
+  postsController.store
+);
 
-body("title").notEmpty(),
-body("image").notEmpty(),
-body("content").notEmpty(),
-body("published").isBoolean(),
-
-postsController.store);
-
-router.put('/:id', checkSchema(postCreate), postsController.update);
+router.put('/:id', 
+  checkSchema(post),
+  postsController.update
+);
 
 router.delete('/:id', postsController.destroy);
 
 module.exports = router;
-
 /*   data:{
             "title": newPost.title,  
             "image": newPost.image,  

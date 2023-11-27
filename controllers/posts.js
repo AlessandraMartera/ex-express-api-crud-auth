@@ -85,7 +85,16 @@ async function store(req, res) {
 }
 
 async function update(req, res) {
+
     const { id } = req.params;
+
+    const errors = validationResult(req);
+    // errorValidation(errors);
+
+    if (!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array() });
+    }
+    
     const newPost = req.body;
     const data = await prisma.post.update({
         where:{
@@ -99,7 +108,7 @@ async function update(req, res) {
             "published": newPost.published,
             "categoryId": newPost.category,
             "tags": {
-                set: newPost.tags.map((tagId) => ({ id: tagId }))
+                set: newPost.tags ? newPost.tags.map((tagId) => ({ id: tagId })) : []
             }
         }
     })
